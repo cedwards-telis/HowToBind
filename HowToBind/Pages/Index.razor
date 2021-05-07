@@ -1,0 +1,20 @@
+﻿@page "/"
+
+<h1>Order</h1>
+
+<BillingAddress @bind-BillingAddressText=@BillingAddressText />
+
+<ShippingAddress @bind-ShippingAddressText=@ShippingAddressText BillingAddressText=@BillingAddressText />
+
+<h1>Order Summary</h1>
+
+<p>Billing Addreess is:-</p>
+<address>@BillingAddressText</address>
+
+<p>Shipping Addreess is:-</p>
+<address>@ShippingAddressText</address>
+
+@code {
+    private string BillingAddressText;
+    private string ShippingAddressText;
+}
