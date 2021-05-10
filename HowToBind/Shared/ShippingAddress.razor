@@ -2,43 +2,29 @@
 
 <input type="checkbox" value="@sameAsBillingAddress" @onchange="SameAsBillingAddressChanged" /> Same as Billing Address
 <br />
-<textarea @bind="@ShippingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" disabled="@sameAsBillingAddress" />
+<textarea value="@ShippingAddressText" @onchange="Update" disabled="@sameAsBillingAddress" />
 <address>@ShippingAddressText</address>
 
 @code {
 
-    string shippingAddressText;
     [Parameter]
-    public string ShippingAddressText
-    {
-        get
-        {
-            return shippingAddressText;
-        }
-        set
-        {
-            shippingAddressText = value;
-            if (sameAsBillingAddress)
-            {
-                shippingAddressText = billingAddressText;
-            }
-        }
-    }
+    public string ShippingAddressText { get; set; }
 
     string billingAddressText;
     [Parameter]
     public string BillingAddressText
     {
-        get
-        {
-            return billingAddressText;
-        }
+        get => billingAddressText;
+
         set
         {
+            if (billingAddressText == value) return;
+
             billingAddressText = value;
             if (sameAsBillingAddress)
             {
-                shippingAddressText = billingAddressText;
+                ShippingAddressText = billingAddressText;
+                ShippingAddressTextChanged.InvokeAsync(ShippingAddressText);
             }
         }
     }
@@ -58,6 +44,7 @@
 
     private async Task Update(ChangeEventArgs args)
     {
-        await ShippingAddressTextChanged.InvokeAsync(args.Value.ToString());
+        ShippingAddressText = args.Value.ToString();
+        await ShippingAddressTextChanged.InvokeAsync(ShippingAddressText);
     }
 }

@@ -1,6 +1,6 @@
 ﻿<h3>Billing Address</h3>
 
-<textarea @bind="@BillingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" />
+<textarea value="@BillingAddressText" @onchange="Update" />
 <address>@BillingAddressText</address>
 
 @code {
