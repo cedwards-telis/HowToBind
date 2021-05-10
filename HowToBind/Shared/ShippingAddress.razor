@@ -2,30 +2,23 @@
 
 <h3>Shipping Address</h3>
 
-<input type="checkbox" @bind-value="@sameAsBillingAddress" /> Same as Billing Address
+<input type="checkbox" @bind-value="@OrderService.SameAsBillingAddress" /> Same as Billing Address
 <br />
-<textarea @bind="@OrderService.ShippingAddress" disabled="@sameAsBillingAddress" />
+<textarea @bind="@OrderService.ShippingAddress" disabled="@OrderService.SameAsBillingAddress" />
 <address>@OrderService.ShippingAddress</address>
 
 @code {
 
     [Inject] OrderService OrderService { get; set; }
-
-
-    private bool sameAsBillingAddress
+    protected override Task OnInitializedAsync()
     {
-        get => _sameAsBillingAddress;
-        set
-        {
-            if (value != _sameAsBillingAddress)
-            {
-                if (value)
-                    OrderService.ShippingAddress = OrderService.BillingAddress;
-                StateHasChanged();
-                _sameAsBillingAddress = value;
-            }
-        }
+        this.OrderService.OrderChanged += this.OnOrderChanged;
+        return base.OnInitializedAsync();
     }
 
-    private bool _sameAsBillingAddress;
+    private void OnOrderChanged(object sender, EventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+        => this.OrderService.OrderChanged -= this.OnOrderChanged;
 }

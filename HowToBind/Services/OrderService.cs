@@ -31,10 +31,29 @@ namespace HowToBind.Services
                 {
                     NotifyOrderChanged();
                     _BillingAddress = value;
+                    if (_sameAsBillingAddress)
+                        ShippingAddress = BillingAddress;
                 }
             }
         }
         private string _BillingAddress = string.Empty;
+
+        public bool SameAsBillingAddress
+        {
+            get => _sameAsBillingAddress;
+            set
+            {
+                if (value != _sameAsBillingAddress)
+                {
+                    if (value)
+                        ShippingAddress = BillingAddress;
+                    NotifyOrderChanged();
+                    _sameAsBillingAddress = value;
+                }
+            }
+        }
+
+        private bool _sameAsBillingAddress;
 
         public event EventHandler OrderChanged;
 
