@@ -1,12 +1,8 @@
 ﻿<h3>Shipping Address</h3>
-
-<input type="checkbox" value="@sameAsBillingAddress" @onchange="SameAsBillingAddressChanged" /> Same as Billing Address
-<br />
+<input type="checkbox" value="@sameAsBillingAddress" @onchange="SameAsBillingAddressChanged" /> Same as Billing Address<br />
 <textarea @bind="@ShippingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" disabled="@sameAsBillingAddress" />
 <address>@ShippingAddressText</address>
-
 @code {
-
     string shippingAddressText;
     [Parameter]
     public string ShippingAddressText
@@ -39,6 +35,8 @@
             if (sameAsBillingAddress)
             {
                 shippingAddressText = billingAddressText;
+                // Line Below won't work
+                // await ShippingAddressTextChanged.InvokeAsync(billingAddressText);
             }
         }
     }
