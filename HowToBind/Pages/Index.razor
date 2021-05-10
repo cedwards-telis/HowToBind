@@ -1,20 +1,32 @@
 ﻿@page "/"
+@implements IDisposable
+@using Services
 
 <h1>Order</h1>
 
-<BillingAddress @bind-BillingAddressText=@BillingAddressText />
-
-<ShippingAddress @bind-ShippingAddressText=@ShippingAddressText BillingAddressText=@BillingAddressText />
+<BillingAddress />
+<ShippingAddress />
 
 <h1>Order Summary</h1>
 
 <p>Billing Addreess is:-</p>
-<address>@BillingAddressText</address>
-
+<address>@OrderService.BillingAddress</address>
 <p>Shipping Addreess is:-</p>
-<address>@ShippingAddressText</address>
+<address>@OrderService.ShippingAddress</address>
 
 @code {
-    private string BillingAddressText;
-    private string ShippingAddressText;
+
+    [Inject] OrderService OrderService { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        this.OrderService.OrderChanged += this.OnOrderChanged;
+        return base.OnInitializedAsync();
+    }
+
+    private void OnOrderChanged(object sender, EventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+        => this.OrderService.OrderChanged -= this.OnOrderChanged;
 }

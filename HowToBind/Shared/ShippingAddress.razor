@@ -1,63 +1,31 @@
-﻿<h3>Shipping Address</h3>
+﻿@using Services
 
-<input type="checkbox" value="@sameAsBillingAddress" @onchange="SameAsBillingAddressChanged" /> Same as Billing Address
+<h3>Shipping Address</h3>
+
+<input type="checkbox" @bind-value="@sameAsBillingAddress" /> Same as Billing Address
 <br />
-<textarea @bind="@ShippingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" disabled="@sameAsBillingAddress" />
-<address>@ShippingAddressText</address>
+<textarea @bind="@OrderService.ShippingAddress" disabled="@sameAsBillingAddress" />
+<address>@OrderService.ShippingAddress</address>
 
 @code {
 
-    string shippingAddressText;
-    [Parameter]
-    public string ShippingAddressText
+    [Inject] OrderService OrderService { get; set; }
+
+
+    private bool sameAsBillingAddress
     {
-        get
-        {
-            return shippingAddressText;
-        }
+        get => _sameAsBillingAddress;
         set
         {
-            shippingAddressText = value;
-            if (sameAsBillingAddress)
+            if (value != _sameAsBillingAddress)
             {
-                shippingAddressText = billingAddressText;
+                if (value)
+                    OrderService.ShippingAddress = OrderService.BillingAddress;
+                StateHasChanged();
+                _sameAsBillingAddress = value;
             }
         }
     }
 
-    string billingAddressText;
-    [Parameter]
-    public string BillingAddressText
-    {
-        get
-        {
-            return billingAddressText;
-        }
-        set
-        {
-            billingAddressText = value;
-            if (sameAsBillingAddress)
-            {
-                shippingAddressText = billingAddressText;
-            }
-        }
-    }
-
-    [Parameter]
-    public EventCallback<string> ShippingAddressTextChanged { get; set; }
-
-    bool sameAsBillingAddress;
-    private async Task SameAsBillingAddressChanged(ChangeEventArgs args)
-    {
-        sameAsBillingAddress = (bool)args.Value;
-        if (sameAsBillingAddress)
-        {
-            await ShippingAddressTextChanged.InvokeAsync(billingAddressText);
-        }
-    }
-
-    private async Task Update(ChangeEventArgs args)
-    {
-        await ShippingAddressTextChanged.InvokeAsync(args.Value.ToString());
-    }
+    private bool _sameAsBillingAddress;
 }
