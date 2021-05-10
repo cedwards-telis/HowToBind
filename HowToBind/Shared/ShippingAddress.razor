@@ -23,8 +23,8 @@
             billingAddressText = value;
             if (sameAsBillingAddress)
             {
-                ShippingAddressText = billingAddressText;
-                ShippingAddressTextChanged.InvokeAsync(ShippingAddressText);
+                //ShippingAddressText = billingAddressText;
+                ShippingAddressTextChanged.InvokeAsync(billingAddressText);
             }
         }
     }
@@ -44,7 +44,7 @@
 
     private async Task Update(ChangeEventArgs args)
     {
-        ShippingAddressText = args.Value.ToString();
-        await ShippingAddressTextChanged.InvokeAsync(ShippingAddressText);
+        //ShippingAddressText = args.Value.ToString();
+        await ShippingAddressTextChanged.InvokeAsync(args.Value.ToString());
     }
 }
