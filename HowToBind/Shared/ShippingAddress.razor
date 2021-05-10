@@ -1,63 +1,13 @@
-﻿<h3>Shipping Address</h3>
+﻿@using ViewModels 
+<h3>Shipping Address</h3>
 
-<input type="checkbox" value="@sameAsBillingAddress" @onchange="SameAsBillingAddressChanged" /> Same as Billing Address
+<input type="checkbox" @bind="@Order.SameAsBillingAddress" /> Same as Billing Address
 <br />
-<textarea @bind="@ShippingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" disabled="@sameAsBillingAddress" />
-<address>@ShippingAddressText</address>
+<textarea @bind="@Order.ShippingAddressText" @bind:event="onchange" disabled="@Order.SameAsBillingAddress" />
+<address>@Order.ShippingAddressText</address>
 
 @code {
 
-    string shippingAddressText;
-    [Parameter]
-    public string ShippingAddressText
-    {
-        get
-        {
-            return shippingAddressText;
-        }
-        set
-        {
-            shippingAddressText = value;
-            if (sameAsBillingAddress)
-            {
-                shippingAddressText = billingAddressText;
-            }
-        }
-    }
-
-    string billingAddressText;
-    [Parameter]
-    public string BillingAddressText
-    {
-        get
-        {
-            return billingAddressText;
-        }
-        set
-        {
-            billingAddressText = value;
-            if (sameAsBillingAddress)
-            {
-                shippingAddressText = billingAddressText;
-            }
-        }
-    }
-
-    [Parameter]
-    public EventCallback<string> ShippingAddressTextChanged { get; set; }
-
-    bool sameAsBillingAddress;
-    private async Task SameAsBillingAddressChanged(ChangeEventArgs args)
-    {
-        sameAsBillingAddress = (bool)args.Value;
-        if (sameAsBillingAddress)
-        {
-            await ShippingAddressTextChanged.InvokeAsync(billingAddressText);
-        }
-    }
-
-    private async Task Update(ChangeEventArgs args)
-    {
-        await ShippingAddressTextChanged.InvokeAsync(args.Value.ToString());
-    }
+    [CascadingParameter]
+    public Order Order { get; set; }
 }

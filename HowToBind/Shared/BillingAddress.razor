@@ -1,17 +1,10 @@
-﻿<h3>Billing Address</h3>
+﻿@using ViewModels
+<h3>Billing Address</h3>
 
-<textarea @bind="@BillingAddressText" @bind:event="oninput" @onchange="(args)=>Update(args)" />
-<address>@BillingAddressText</address>
+<textarea @bind="@Order.BillingAddressText" @bind:event="oninput" />
+<address>@Order.BillingAddressText</address>
 
 @code {
-    [Parameter]
-    public string BillingAddressText { get; set; }
-
-    [Parameter]
-    public EventCallback<string> BillingAddressTextChanged { get; set; }
-
-    private async Task Update(ChangeEventArgs args)
-    {
-        await BillingAddressTextChanged.InvokeAsync(args.Value.ToString());
-    }
+    [CascadingParameter]
+    public Order Order { get; set; }
 }

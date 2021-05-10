@@ -1,20 +1,32 @@
-﻿@page "/"
+﻿@using ViewModels
+@page "/"
 
 <h1>Order</h1>
-
-<BillingAddress @bind-BillingAddressText=@BillingAddressText />
-
-<ShippingAddress @bind-ShippingAddressText=@ShippingAddressText BillingAddressText=@BillingAddressText />
+<CascadingValue Value="@Order">
+    <BillingAddress />
+    <ShippingAddress />
+</CascadingValue>
 
 <h1>Order Summary</h1>
 
 <p>Billing Addreess is:-</p>
-<address>@BillingAddressText</address>
+<address>@Order.BillingAddressText</address>
 
 <p>Shipping Addreess is:-</p>
-<address>@ShippingAddressText</address>
+<address>@Order.ShippingAddressText</address>
 
 @code {
-    private string BillingAddressText;
-    private string ShippingAddressText;
+    Order Order = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        this.Order.OrderChanged += this.OnOrderChanged;
+        return base.OnInitializedAsync();
+    }
+
+    private void OnOrderChanged(object sender, EventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+        => this.Order.OrderChanged -= this.OnOrderChanged;
 }
