@@ -1,18 +1,9 @@
 ﻿<h3>Billing Address</h3>
 
-<textarea value=@CurrentBillingAddress.BillingAddressText @onchange="(args)=>UpdateBillingAddress(args)" />
+<textarea @bind=@CurrentBillingAddress.BillingAddressText />
 <address>@CurrentBillingAddress.BillingAddressText</address>
 
 @code {
     [Parameter]
-    public Order.ShippingAddress CurrentShippingAddress { get; set; }
-
-    [Parameter]
     public Order.BillingAddress CurrentBillingAddress { get; set; }
-
-    [Action]
-    void UpdateBillingAddress(ChangeEventArgs args)
-    {
-        CurrentBillingAddress.UpdateBillingAddress(args.Value.ToString());
-    }
 }

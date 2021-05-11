@@ -24,16 +24,6 @@ namespace HowToBind.ViewModels
                 _parent = parent;
             }
             public string BillingAddressText { get; set; }
-
-            [Action]
-            public void UpdateBillingAddress(string BillingAddressText)
-            {
-                this.BillingAddressText = BillingAddressText;
-                if (_parent.CurrentShippingAddress.SameAsBillingAddress)
-                {
-                    _parent.CurrentShippingAddress.ShippingAddressText = BillingAddressText;
-                }
-            }
         }
         public ShippingAddress CurrentShippingAddress { get; set; }
         [Observable]
@@ -44,18 +34,15 @@ namespace HowToBind.ViewModels
             {
                 _parent = parent;
             }
-            public string ShippingAddressText { get; set; }
-            public bool SameAsBillingAddress { get; set; }
 
-            [Action]
-            public void UpdateSameAsBillingAddress(bool Value)
+            private string shippingAddressText;
+            [Computed]
+            public string ShippingAddressText
             {
-                this.SameAsBillingAddress = Value;
-                if (this.SameAsBillingAddress)
-                {
-                    this.ShippingAddressText = _parent.CurrentBillingAddrees.BillingAddressText;
-                }
+                get => SameAsBillingAddress ? _parent.CurrentBillingAddrees.BillingAddressText : shippingAddressText;
+                set => shippingAddressText = value;
             }
+            public bool SameAsBillingAddress { get; set; }
         }
     }
 }
