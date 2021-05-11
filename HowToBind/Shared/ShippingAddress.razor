@@ -1,18 +1,21 @@
 ﻿<h3>Shipping Address</h3>
 
-<input type="checkbox" @bind="@Order.SameAsBillingAddress" /> Same as Billing Address
+<input type="checkbox" value="@CurrentShippingAddress.SameAsBillingAddress" @onchange="(args)=>UpdateSameAsBillingAddress(args)" /> Same as Billing Address
 <br />
-<textarea value="@Order.ComputedShippingAddressText" @onchange="(args)=>Update(args)" disabled="@Order.SameAsBillingAddress" />
-<address>@Order.ComputedShippingAddressText</address>
+<textarea @bind="@CurrentShippingAddress.ShippingAddressText" disabled="@CurrentShippingAddress.SameAsBillingAddress" />
+<address>@CurrentShippingAddress.ShippingAddressText</address>
 
 @code {
 
     [Parameter]
-    public Order Order { get; set; }
+    public Order.ShippingAddress CurrentShippingAddress { get; set; }
+
+    [Parameter]
+    public Order.BillingAddress CurrentBillingAddress { get; set; }
 
     [Action]
-    void Update(ChangeEventArgs args)
+    void UpdateSameAsBillingAddress(ChangeEventArgs args)
     {
-        Order.ShippingAddressText = args.Value.ToString();
+        CurrentShippingAddress.UpdateSameAsBillingAddress((bool)args.Value);
     }
 }

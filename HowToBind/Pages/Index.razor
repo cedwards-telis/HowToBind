@@ -2,18 +2,19 @@
 
 <h1>Order</h1>
 
-<BillingAddress Order=@Order />
+<BillingAddress CurrentBillingAddress=@CurrentOrder.CurrentBillingAddrees CurrentShippingAddress=@CurrentOrder.CurrentShippingAddress />
 
-<ShippingAddress Order=@Order />
+<ShippingAddress CurrentShippingAddress=@CurrentOrder.CurrentShippingAddress CurrentBillingAddress=@CurrentOrder.CurrentBillingAddrees />
 
 <h1>Order Summary</h1>
 
 <p>Billing Addreess is:-</p>
-<address>@Order.BillingAddressText</address>
+<address>@CurrentOrder.CurrentBillingAddrees.BillingAddressText</address>
 
 <p>Shipping Addreess is:-</p>
-<address>@Order.ComputedShippingAddressText</address>
+<address>@CurrentOrder.CurrentShippingAddress.ShippingAddressText</address>
 
 @code {
-    private Order Order = new();
+    [Inject]
+    public Order CurrentOrder { get; set; }
 }

@@ -1,5 +1,6 @@
 using Cortex.Net;
 using HowToBind.Data;
+using HowToBind.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace HowToBind
             SharedState.GlobalState.Configuration.EnforceActions = EnforceAction.Never;
             // Add the Shared state to the DI container.
             services.AddScoped(x => SharedState.GlobalState);
+            services.AddScoped<Order>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
