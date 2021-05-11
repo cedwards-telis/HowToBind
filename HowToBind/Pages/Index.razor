@@ -2,19 +2,18 @@
 
 <h1>Order</h1>
 
-<BillingAddress @bind-BillingAddressText=@BillingAddressText />
+<BillingAddress @bind-BillingAddressText=@Order.CurrentBillingAddress />
 
-<ShippingAddress @bind-ShippingAddressText=@ShippingAddressText BillingAddressText=@BillingAddressText />
+<ShippingAddress @bind-ShippingAddressText=@Order.CurrentShippingAddress ComputedShippingAddressText=@Order.ComputedShippingAddressText />
 
 <h1>Order Summary</h1>
 
 <p>Billing Addreess is:-</p>
-<address>@BillingAddressText</address>
+<address>@Order.CurrentBillingAddress.BillingAddressText</address>
 
 <p>Shipping Addreess is:-</p>
-<address>@ShippingAddressText</address>
+<address>@Order.ComputedShippingAddressText</address>
 
 @code {
-    private string BillingAddressText;
-    private string ShippingAddressText;
+    private Order Order = new();
 }

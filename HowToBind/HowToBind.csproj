@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Cortex.Net" Version="0.4.1" />
+    <PackageReference Include="Cortex.Net.Blazor" Version="0.4.1" />
+  </ItemGroup>
+
 </Project>
