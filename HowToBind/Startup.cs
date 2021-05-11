@@ -1,3 +1,4 @@
+using Cortex.Net;
 using HowToBind.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -29,6 +30,12 @@ namespace HowToBind
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            // Blazor is single threaded for now but does not provide a Synchronization Context;
+            SharedState.GlobalState.Configuration.SynchronizationContext = new System.Threading.SynchronizationContext();
+            // Do not enforce actions. This is to allow observable properties to be bound using normal bind directives.
+            SharedState.GlobalState.Configuration.EnforceActions = EnforceAction.Never;
+            // Add the Shared state to the DI container.
+            services.AddScoped(x => SharedState.GlobalState);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

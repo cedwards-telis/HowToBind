@@ -9,23 +9,11 @@ namespace HowToBind.ViewModels
     [Observable]
     public class Order
     {
-        public BillingAddress CurrentBillingAddress { get; set; } = new();
-        [Observable]
-        public class BillingAddress
-        {
-            public string BillingAddressText { get; set; }
-        }
-
-        public ShippingAddress CurrentShippingAddress { get; set; } = new();
-        [Observable]
-        public class ShippingAddress
-        {
-            public string ShippingAddressText { get; set; }
-            public bool SameAsBillingAddress { get; set; }
-        }
-
+        public string BillingAddressText { get; set; }
+        public string ShippingAddressText { get; set; }
+        public bool SameAsBillingAddress { get; set; }
         [Computed]
-        public string ComputedShippingAddressText => CurrentShippingAddress.SameAsBillingAddress ? 
-            CurrentBillingAddress.BillingAddressText : CurrentShippingAddress.ShippingAddressText;
+        public string ComputedShippingAddressText => SameAsBillingAddress ?
+            BillingAddressText : ShippingAddressText;
     }
 }

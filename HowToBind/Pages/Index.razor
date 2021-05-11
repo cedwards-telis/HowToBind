@@ -2,14 +2,14 @@
 
 <h1>Order</h1>
 
-<BillingAddress @bind-BillingAddressText=@Order.CurrentBillingAddress />
+<BillingAddress Order=@Order />
 
-<ShippingAddress @bind-ShippingAddressText=@Order.CurrentShippingAddress ComputedShippingAddressText=@Order.ComputedShippingAddressText />
+<ShippingAddress Order=@Order />
 
 <h1>Order Summary</h1>
 
 <p>Billing Addreess is:-</p>
-<address>@Order.CurrentBillingAddress.BillingAddressText</address>
+<address>@Order.BillingAddressText</address>
 
 <p>Shipping Addreess is:-</p>
 <address>@Order.ComputedShippingAddressText</address>
